@@ -19,8 +19,11 @@ for dirname, _, filenames in os.walk('/kaggle/input'):
 ddos_data = pd.read_csv("/kaggle/input/cse632-project2-training/training.csv", index_col=0)
 # Number of rows = 760,426
 
-# Drop rows having 'Infinity' or 'NaN' values for 'Flow Byts/s' and 'Flow Pkts/s':
-ddos_data = ddos_data[ddos_data['Flow Pkts/s'] != np.inf]
+# Alter rows having 'Infinity' or 'NaN' values for 'Flow Byts/s' and 'Flow Pkts/s':
+ddos_data['Flow Byts/s'].fillna(0, inplace=True)
+ddos_data.replace({np.inf:0}, inplace=True)
+
+# Change 'Timestamp' data type:
 ddos_data['Timestamp'] = pd.to_datetime(ddos_data['Timestamp'])
 
 # Split data before preprocessing to prevent leakage:
@@ -249,8 +252,11 @@ plt.show()
 # Load competition testing data set to data frame:
 ddos_comp = pd.read_csv("/kaggle/input/cse632-project-2-testing/testing.csv", index_col=0)
 
-# Drop rows having 'Infinity' or 'NaN' values for 'Flow Byts/s' and 'Flow Pkts/s':
-ddos_comp = ddos_comp[ddos_comp['Flow Pkts/s'] != np.inf]
+# Alter rows having 'Infinity' or 'NaN' values for 'Flow Byts/s' and 'Flow Pkts/s':
+ddos_comp['Flow Byts/s'].fillna(0, inplace=True)
+ddos_comp.replace({np.inf:0}, inplace=True)
+
+# Change 'Timestamp' data type:
 ddos_comp['Timestamp'] = pd.to_datetime(ddos_comp['Timestamp'])
 
 # Drop 'Flow ID', 'Src IP', 'Dst IP' for the DataFrame:
